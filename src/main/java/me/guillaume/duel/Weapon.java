@@ -1,30 +1,45 @@
 package me.guillaume.duel;
 
-public enum Weapon implements DeliversDamage {
-    ONE_HAND_SWORD(5),
-    ONE_HAND_AXE(6),
-    TWO_HANDED_SWORD(12){
-        private int numOfAttacks = 0;
-        @Override
-        public Damage deliverDamage() {
-            use();
-            return Damage.of(canAttack() ? hitPoints : 0, this);
-        }
-        boolean canAttack(){
-            return numOfAttacks > 0;
-        }
+public class Weapon implements DeliversDamage {
+    static final Weapon ONE_HAND_SWORD = new Weapon(5, false);
+    static final Weapon ONE_HAND_AXE = new Weapon(6, true);
 
-        void use(){
-            numOfAttacks = ++numOfAttacks % 3;
-        }
-
-    };
     protected final int hitPoints;
-    Weapon(int hitPoints) {
+    private final boolean isAxe;
+
+    private Weapon(int hitPoints, boolean isAxe) {
         this.hitPoints = hitPoints;
+        this.isAxe = isAxe;
     }
+
     @Override
     public Damage deliverDamage() {
         return Damage.of(hitPoints, this);
+    }
+
+    public boolean isAxe() {
+        return isAxe;
+    }
+
+    static Weapon twoHandedSword() {
+        return new Weapon(12, false) {
+            private int numOfAttacks = 0;
+
+            @Override
+            public Damage deliverDamage() {
+                use();
+                return Damage.of(canAttack() ? hitPoints : 0, this);
+            }
+
+            boolean canAttack() {
+                return numOfAttacks > 0;
+            }
+
+            void use() {
+                numOfAttacks = ++numOfAttacks % 3;
+            }
+
+        };
+
     }
 }

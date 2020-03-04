@@ -1,7 +1,5 @@
 package me.guillaume.duel;
 
-import static me.guillaume.duel.Weapon.ONE_HAND_AXE;
-
 public class Buckler implements BlocksDamage{
     private boolean isActive = false;
     private int numOfAxeBlocks = 0;
@@ -23,7 +21,7 @@ public class Buckler implements BlocksDamage{
 
     private void block(Weapon weapon)  {
         isActive = !isActive;
-        if (isActive && weapon == ONE_HAND_AXE){
+        if (isActive && weapon.isAxe()){
             ++numOfAxeBlocks;
         }
     }
